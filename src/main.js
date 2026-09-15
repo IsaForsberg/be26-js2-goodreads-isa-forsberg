@@ -42,6 +42,7 @@ const authorInput = document.getElementById('authorInput')
 
 // Lägger till en ny bok via addBook och rensar formuläret, formuläret förblir öppet
 addBookForm.addEventListener('submit', async (event)=> {
+  
     event.preventDefault();
     const bookData = {
     title: titleInput.value,

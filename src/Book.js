@@ -1,3 +1,4 @@
+// Representerar en bok, med privata fält och kontrollerad åtkomst via getters/metoder
 export class Book {
     #id;
     #title;
@@ -39,10 +40,12 @@ export class Book {
         return this.#comment
     }
 
+    // Växlar mellan läst/oläst
     toggleRead() {
         this.#isRead = !this.#isRead
     }
 
+    // Sätter betyg, kastar fel om värdet ligger utanför 1-5
     setRating(value) {
         if (value < 1 || value > 5) {
             throw new Error('cant be over 5 och under 1')
@@ -50,6 +53,7 @@ export class Book {
         this.#rating = value
     }
 
+    // Sätter kommentartext
     setComment(text) {
         this.#comment = text
     }

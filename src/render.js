@@ -9,9 +9,10 @@ export function renderBooks(bookList){
         const checkbox = document.createElement('input')
         checkbox.type = 'checkbox'
         checkbox.checked = book.isRead
+        // Märker checkboxen med bokens id (data-id) så main.js kan koppla event.target till rätt bok
         checkbox.dataset.id = book.id
         const listItem = document.createElement('li')
-        listItem.textContent = `${book.title} ${book.author}`
+        listItem.textContent = `Title:${book.title}\nAuthor:${book.author}`
         listItem.append(checkbox)
         if(book.isRead === true){
             haveReadList.append(listItem)
