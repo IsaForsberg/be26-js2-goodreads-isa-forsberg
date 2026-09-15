@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Good Reads</title>
+  </head>
+  <body>
+    <h1> Good Reads</h1>
+     <button id="showFormBtn">Add New Book</button>
+     <form id="addBookForm" hidden>
+      <input type="text" id="titleInput" placeholder="Titel" required>
+      <input type="text" id="authorInput" placeholder="Author" required>
+      <button type="submit" id="submitBookBtn">Add Book</button>
+     </form>
+     <h2>Want to Read</h2>
+     <div id="wantsToReadWrapper">
+      <ul id="wantsToReadList">
+        
+      </ul>
+     </div>
+     <h2>Have Read</h2>
+     <div id="haveReadWrapper">
+      <ul id="haveReadList">
+
+      </ul>
+     </div>
+      <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
