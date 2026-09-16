@@ -66,8 +66,20 @@ async function handleReadToggle(event){
   await loadAndRenderBooks()
 }
 
+// Sätter betyget på boken vars stjärna klickades, sparar ändringen i Firebase och renderar om listan
+async function handleRatingClick (event){
+  const book = bookList.find(book => book.id === event.target.dataset.id)
+  book.setRating(Number(event.target.dataset.value))
+  await updateBook(book.id, {rating: book.rating})
+  await loadAndRenderBooks()
+}
 const wantsToReadList = document.getElementById('wantsToReadList')
 const haveReadList = document.getElementById('haveReadList')
 
 wantsToReadList.addEventListener('change', handleReadToggle)
 haveReadList.addEventListener('change', handleReadToggle)
+haveReadList.addEventListener('click', handleRatingClick)
+
+
+
+

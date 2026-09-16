@@ -183,3 +183,8 @@ h2 {
   font-size: 13px;
   color: var(--text);
 }
+
+.rating-container span {
+  font-size: 22px;
+  cursor: pointer;
+}
