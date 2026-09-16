@@ -7,16 +7,23 @@ export function renderBooks(bookList){
     
     for (const book of bookList) {
         const checkbox = document.createElement('input')
+        
         checkbox.type = 'checkbox'
         checkbox.checked = book.isRead
         // Märker checkboxen med bokens id (data-id) så main.js kan koppla event.target till rätt bok
         checkbox.dataset.id = book.id
-        const listItem = document.createElement('li')
-        listItem.textContent = `Title:${book.title}\nAuthor:${book.author}`
-        listItem.append(checkbox)
-        if(book.isRead === true){
+          const checkboxLabel = document.createElement('label')
+          const checkboxWrapper = document.createElement('span') //för styling, centrera text och bow
+          checkboxWrapper.className = 'checkbox-wrapper'
+          checkboxWrapper.append(checkbox, checkboxLabel)
+          
+          const listItem = document.createElement('li')
+          listItem.textContent = `Title:${book.title}\nAuthor:${book.author}`
+          listItem.append(checkboxWrapper)
+          if(book.isRead === true){
             haveReadList.append(listItem)
-        }else{
+          }else{ 
+            checkboxLabel.textContent = 'Mark as Read'
             wantsToReadList.append(listItem)
         }  
     }

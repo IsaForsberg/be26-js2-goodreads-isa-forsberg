@@ -1,9 +1,9 @@
 import './style.css'
 import { Book } from './Book.js'
-import { getBooks } from './getbooks.js'
+import { getBooks } from './firebaserequest/getbooks.js'
 import { renderBooks } from './render.js'
-import { addBook } from './addbook.js'
-import { updateBook } from './updatebook.js'
+import { addBook } from './firebaserequest/addbook.js'
+import { updateBook } from './firebaserequest/updatebook.js'
 
 let bookList = [];
 //skapar array för att samal objekten
@@ -37,12 +37,12 @@ showFormBtn.addEventListener('click', () => {
   }
 })
 
-const titleInput = document.getElementById('titleInput')
-const authorInput = document.getElementById('authorInput')
+
 
 // Lägger till en ny bok via addBook och rensar formuläret, formuläret förblir öppet
 addBookForm.addEventListener('submit', async (event)=> {
-  
+const titleInput = document.getElementById('titleInput')
+const authorInput = document.getElementById('authorInput')
     event.preventDefault();
     const bookData = {
     title: titleInput.value,

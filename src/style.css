@@ -166,10 +166,20 @@ h2 {
   white-space: pre-line;
 }
 
-#wantsToReadList li input[type='checkbox'],
-#haveReadList li input[type='checkbox'] {
+.checkbox-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   align-self: flex-end;
+}
+
+.checkbox-wrapper input[type='checkbox'] {
   width: 18px;
   height: 18px;
   accent-color: var(--accent);
+}
+
+.checkbox-wrapper label {
+  font-size: 13px;
+  color: var(--text);
 }
