@@ -1,5 +1,5 @@
 // Renderar om hela listan: tömmer båda hyllorna och sorterar in varje bok efter isRead
-export function renderBooks(bookList) {
+export function renderBooks(bookList, commentDrafts) {
   const wantsToReadList = document.getElementById('wantsToReadList')
   const haveReadList = document.getElementById('haveReadList')
   wantsToReadList.innerHTML = ''
@@ -21,8 +21,10 @@ export function renderBooks(bookList) {
     const ratingContainer = document.createElement('div')
     ratingContainer.className = 'rating-container'
 
+   
+    
     const listItem = document.createElement('li')
-    listItem.textContent = `Title: ${book.title}\nAuthor:${book.author}`
+    listItem.textContent = `Title: ${book.title}\nAuthor: ${book.author}`
     listItem.append(checkboxWrapper, ratingContainer)
 
     if (book.isRead === true) {
@@ -40,6 +42,17 @@ export function renderBooks(bookList) {
         }
         ratingContainer.appendChild(star)
       }
+       const commentInput = document.createElement('textarea')
+       const commentBtn = document.createElement('button')
+       commentBtn.textContent = 'Add Comment'
+       commentBtn.dataset.id = book.id
+       commentBtn.className = 'comment-btn'
+       commentInput.className = 'comment-input'
+       commentInput.dataset.id = book.id
+       // Prioriterar en opsarad draft (från main.js) över den sparade kommentaren i Firebase
+       commentInput.value = commentDrafts[book.id] ?? (book.comment || '')
+       commentInput.maxLength = 200
+       listItem.append(commentInput, commentBtn)
       haveReadList.append(listItem)
     } else {
       //Oläst bok får "Mark as Read" vid checkboxen

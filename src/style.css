@@ -188,3 +188,17 @@ h2 {
   font-size: 22px;
   cursor: pointer;
 }
+
+.comment-input {
+  width: 100%;
+  max-width: 100%;
+  resize: vertical;
+  font: inherit;
+  font-size: 13px;
+  background: #fff;
+  transition: background 0.3s;
+}
+
+.comment-input.saved {
+  background: var(--accent-light);
+}

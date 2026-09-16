@@ -6,6 +6,8 @@ import { addBook } from './firebaserequest/addbook.js'
 import { updateBook } from './firebaserequest/updatebook.js'
 
 let bookList = [];
+// Håller opsarad kommentartext per boks id, så den inte försvinner vid omrendering (t.ex. vid betygsättning)
+const commentDrafts = {}
 //skapar array för att samal objekten
 //omvandlar rådata till instanser och samlar dem i en array
 function mapBooks(data) {
@@ -20,7 +22,7 @@ function mapBooks(data) {
 // Hämtar färsk data från Firebase, mappar till Book-instanser och renderar om listan
 async function loadAndRenderBooks() {
    bookList = mapBooks(await getBooks())
-  renderBooks(bookList)
+  renderBooks(bookList, commentDrafts)
 }
 await loadAndRenderBooks()
 
@@ -36,8 +38,6 @@ showFormBtn.addEventListener('click', () => {
     showFormBtn.textContent = 'Close Form'
   }
 })
-
-
 
 // Lägger till en ny bok via addBook och rensar formuläret, formuläret förblir öppet
 addBookForm.addEventListener('submit', async (event)=> {
@@ -60,7 +60,13 @@ const authorInput = document.getElementById('authorInput')
 
 // Togglar isRead på boken som checkboxen tillhör, sparar ändringen i Firebase och renderar om listan
 async function handleReadToggle(event){
+  // Change bubblar även från t.ex. textarean vid blur, ignorera allt som inte är checkboxen
+  if (event.target.type !== 'checkbox') return
   const book = bookList.find(book => book.id === event.target.dataset.id)
+  // Eventet kan bubbla upp från andra element i listan utan dataset.id (t.ex. kommentarfältet), ignorera då
+  if (!book) {
+    return
+  }
   book.toggleRead()
   await updateBook(book.id, { isRead: book.isRead })
   await loadAndRenderBooks()
@@ -68,7 +74,12 @@ async function handleReadToggle(event){
 
 // Sätter betyget på boken vars stjärna klickades, sparar ändringen i Firebase och renderar om listan
 async function handleRatingClick (event){
+  // Bara stjärnorna har dataset.value, ignorera klick på knappen/tomma ytor i listan
+  if (!event.target.dataset.value) return
   const book = bookList.find(book => book.id === event.target.dataset.id)
+  if (!book) {
+    return
+  }
   book.setRating(Number(event.target.dataset.value))
   await updateBook(book.id, {rating: book.rating})
   await loadAndRenderBooks()
@@ -80,6 +91,29 @@ wantsToReadList.addEventListener('change', handleReadToggle)
 haveReadList.addEventListener('change', handleReadToggle)
 haveReadList.addEventListener('click', handleRatingClick)
 
+// Sparar kommentaren från textarean som hör till den klickade "Add Comment"-knappen
+async function handleCommentSave (event){
+  // Delar click-eventet på haveReadList med handleRatingClick, ignorera allt som inte är just den här knappen
+  if (!event.target.classList.contains('comment-btn')) return
+  const book = bookList.find(book => book.id === event.target.dataset.id)
+  if (!book) {
+    return
+  }
+  const listItem = event.target.closest('li')
+  const textarea = listItem.querySelector('textarea')
+  textarea.classList.add('saved')
+  book.setComment(textarea.value)
+  await updateBook(book.id, { comment: book.comment })
+  await loadAndRenderBooks()
+  delete commentDrafts[book.id]
+}
+haveReadList.addEventListener('click', handleCommentSave)
 
+// Sparar undan opsarad text medan användaren skriver, så den inte försvinner om t.ex. ett betyg sätts innan "Add Comment" klickas
+async function handleCommentInput(event){
+  if (!event.target.classList.contains('comment-input')) return
+  commentDrafts[event.target.dataset.id] = event.target.value
+}
 
+haveReadList.addEventListener('input', handleCommentInput)
 
