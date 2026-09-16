@@ -4,6 +4,7 @@ import { getBooks } from './firebaserequest/getbooks.js'
 import { renderBooks } from './render.js'
 import { addBook } from './firebaserequest/addbook.js'
 import { updateBook } from './firebaserequest/updatebook.js'
+import { deleteBook } from './firebaserequest/deletebook.js'
 
 let bookList = [];
 // Håller opsarad kommentartext per boks id, så den inte försvinner vid omrendering (t.ex. vid betygsättning)
@@ -117,3 +118,15 @@ async function handleCommentInput(event){
 
 haveReadList.addEventListener('input', handleCommentInput)
 
+// Tar bort boken vars delete-knapp klickades, finns på båda hyllorna
+async function handleDeleteClick(event){
+  if (!event.target.classList.contains('delete-btn')) return
+  const book = bookList.find(book => book.id === event.target.dataset.id)
+  if (!book) {
+    return
+  }
+  await deleteBook(book.id)
+  await loadAndRenderBooks()
+}
+wantsToReadList.addEventListener('click', handleDeleteClick)
+haveReadList.addEventListener('click', handleDeleteClick)

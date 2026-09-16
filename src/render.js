@@ -21,11 +21,17 @@ export function renderBooks(bookList, commentDrafts) {
     const ratingContainer = document.createElement('div')
     ratingContainer.className = 'rating-container'
 
-   
+    const deleteBtn = document.createElement('button')
+    deleteBtn.textContent = 'Delete Book'
+    deleteBtn.className = 'delete-btn'
+    deleteBtn.dataset.id = book.id
     
+    const bookInfo = document.createElement('p')
+    bookInfo.className = 'book-info'
+    bookInfo.textContent = `Title: ${book.title}\nAuthor: ${book.author}`
+
     const listItem = document.createElement('li')
-    listItem.textContent = `Title: ${book.title}\nAuthor: ${book.author}`
-    listItem.append(checkboxWrapper, ratingContainer)
+    listItem.append(bookInfo, checkboxWrapper, ratingContainer, deleteBtn)
 
     if (book.isRead === true) {
       // Skapar 5 stjärnor, fyller dem upp till book.rating och märker varje med bokens id + eget värde (1-5)

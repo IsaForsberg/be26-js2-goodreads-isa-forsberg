@@ -166,11 +166,23 @@ h2 {
   white-space: pre-line;
 }
 
+.book-info {
+  margin: 0;
+  font-size: 18px;
+}
+
 .checkbox-wrapper {
   display: flex;
   align-items: center;
   gap: 6px;
-  align-self: flex-end;
+  align-self: flex-start;
+}
+
+/* order+margin-top: auto håller den längst ned oavsett var i DOM:en den skapas, och oavsett hur mycket innehåll kortet har ovanför */
+.delete-btn {
+  order: 2;
+  margin-top: auto;
+  align-self: flex-start;
 }
 
 .checkbox-wrapper input[type='checkbox'] {
