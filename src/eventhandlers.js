@@ -11,6 +11,14 @@ const errorMessage = document.getElementById('errorMessage')
 const wantsToReadList = document.getElementById('wantsToReadList')
 const haveReadList = document.getElementById('haveReadList')
 
+function showError(message) {
+  errorMessage.textContent = message
+}
+
+function clearError() {
+  errorMessage.textContent = ''
+}
+
 function handleFormToggle() {
   addBookForm.hidden = !addBookForm.hidden
   if (addBookForm.hidden === true) {
@@ -33,12 +41,13 @@ async function handleAddBookSubmit(event) {
     comment: ''
   }
   try {
+    clearError()
     await addBook(bookData)
     titleInput.value = ''
     authorInput.value = ''
     await loadAndRenderBooks()
   } catch (error) {
-    errorMessage.textContent = 'Kunde inte lägga till boken, försök igen.'
+    showError('Kunde inte lägga till boken, försök igen.')
   }
 }
 
@@ -51,11 +60,12 @@ async function handleReadToggle(event) {
     return
   }
   try {
+    clearError()
     book.toggleRead()
     await updateBook(book.id, { isRead: book.isRead })
     await loadAndRenderBooks()
   } catch (error) {
-    errorMessage.textContent = 'Kunde inte uppdatera läststatus, försök igen.'
+    showError('Kunde inte uppdatera läststatus, försök igen.')
   }
 }
 
@@ -67,11 +77,12 @@ async function handleRatingClick(event) {
     return
   }
   try {
+    clearError()
     book.setRating(Number(event.target.dataset.value))
     await updateBook(book.id, { rating: book.rating })
     await loadAndRenderBooks()
   } catch (error) {
-    errorMessage.textContent = 'Kunde inte spara betyget, försök igen.'
+    showError('Kunde inte spara betyget, försök igen.')
   }
 }
 
@@ -83,6 +94,7 @@ async function handleCommentSave(event) {
     return
   }
   try {
+    clearError()
     const listItem = event.target.closest('li')
     const textarea = listItem.querySelector('textarea')
     textarea.classList.add('saved')
@@ -91,7 +103,7 @@ async function handleCommentSave(event) {
     await loadAndRenderBooks()
     delete commentDrafts[book.id]
   } catch (error) {
-    errorMessage.textContent = 'Kunde inte spara kommentar, försök igen.'
+    showError('Kunde inte spara kommentar, försök igen.')
   }
 }
 
@@ -108,10 +120,11 @@ async function handleDeleteClick(event) {
     return
   }
   try {
+    clearError()
     await deleteBook(book.id)
     await loadAndRenderBooks()
   } catch (error) {
-    errorMessage.textContent = 'Kunde inte ta bort boken, försök igen.'
+    showError('Kunde inte ta bort boken, försök igen.')
   }
 }
 

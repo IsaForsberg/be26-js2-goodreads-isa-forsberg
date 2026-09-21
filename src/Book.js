@@ -48,7 +48,7 @@ export class Book {
   // Sätter betyg, kastar fel om värdet ligger utanför 1-5
   setRating(value) {
     if (value < 1 || value > 5) {
-      throw new Error('cant be over 5 och under 1')
+      throw new Error('cant be over 5 or under 1')
     }
     this.#rating = value
   }
